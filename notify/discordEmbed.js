@@ -29,7 +29,9 @@ const createEmbed = (event, market) => {
 			name: `NFTGO Rarity Rank: #${event.rank || 'N/A'}`,
 			iconURL:
 				'https://pbs.twimg.com/profile_images/1475300585196777472/GYA3Y-EC_400x400.jpg',
-			url: `https://nftgo.io/asset/ETH/${CONTRACT_ADDRESS}/${event.tokenId}`
+			url: `https://nftgo.io/asset/ETH/${CONTRACT_ADDRESS.toLowerCase()}/${
+				event.tokenId
+			}`
 		});
 	}
 
