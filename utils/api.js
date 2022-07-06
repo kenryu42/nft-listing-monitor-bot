@@ -93,8 +93,7 @@ const getX2Y2FloorPrice = async (contractAddress) => {
 
 		return floorPrice;
 	} catch (error) {
-		console.log(error);
-		return 'api error';
+		throw new Error('X2Y2 API error: getX2Y2FloorPrice()');
 	}
 };
 
