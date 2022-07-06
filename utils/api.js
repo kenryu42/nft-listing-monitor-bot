@@ -111,7 +111,7 @@ const getX2Y2CollectionName = async (contractAddress) => {
 
 		return collectionName;
 	} catch (error) {
-		throw new Error(error);
+		throw new Error('X2Y2 API error: getX2Y2CollectionName()');
 	}
 };
 
