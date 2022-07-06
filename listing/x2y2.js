@@ -61,7 +61,7 @@ async function get_listings(createdAfter, floorPrice, collectionName) {
 				sendEmbed(WEBHOOK_URLS, embeds);
 			}
 		} catch (err) {
-			console.log('X2Y2 API error');
+			console.log('X2Y2 API error: get listing events');
 			break;
 		}
 	} while (nextPage != null);
