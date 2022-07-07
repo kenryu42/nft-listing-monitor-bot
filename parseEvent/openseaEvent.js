@@ -1,18 +1,12 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
-import { CONTRACT_ADDRESS, RARITY_ENABLED } from '../config/setup.js';
-import {
-	shortenAddress,
-	getNFTGORarity,
-	getNftLastPrice
-} from '../utils/api.js';
+import { CONTRACT_ADDRESS } from '../config/setup.js';
+import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
 
 const openseaEvent = async (event, floorPrice) => {
 	let url;
 	let image;
 	let tokenName;
-	let rank = null;
-	let lastSale = null;
 	const quantity = _.get(event, 'quantity');
 	const asset_bundle = _.get(event, 'asset_bundle');
 	const is_bundle = asset_bundle !== null;
@@ -42,18 +36,13 @@ const openseaEvent = async (event, floorPrice) => {
 		tokenName = _.get(event, ['asset', 'name']);
 		url = _.get(event, ['asset', 'permalink']);
 	}
+
 	const title = `${tokenName} listed for ${price} ETH ($${usdPrice})${underFloor}`;
-	if (RARITY_ENABLED) {
-		const rarity = await getNFTGORarity(CONTRACT_ADDRESS, tokenId);
-		const lastPrice = await getNftLastPrice(CONTRACT_ADDRESS, tokenId);
-		lastSale = lastPrice
-			? `\`${lastPrice.price_token} ${
-					lastPrice.token_symbol
-			  } ($ ${lastPrice.price_usd.toFixed(2)})\` <t:${lastPrice.time}:R>`
-			: 'N/A';
-		rank = _.get(rarity, 'rank');
-		console.log(`NFTGO Rarity Rank: #${rank}`);
-	}
+	const { rank, lastSale } = await getRankAndLastSale(
+		CONTRACT_ADDRESS,
+		tokenId
+	);
+
 	console.log(`${tokenName} listed for ${price} Ξ ($${usdPrice}) on opensea\n`);
 
 	return {

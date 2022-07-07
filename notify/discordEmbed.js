@@ -1,4 +1,4 @@
-import { CONTRACT_ADDRESS, RARITY_ENABLED } from '../config/setup.js';
+import { CONTRACT_ADDRESS, NFTGO_ENABLED } from '../config/setup.js';
 import { markets } from '../config/markets.js';
 import { MessageEmbed, WebhookClient } from 'discord.js';
 
@@ -16,7 +16,7 @@ const createEmbed = (event, market) => {
 			text: markets[market].name,
 			iconURL: markets[market].iconURL
 		});
-	if (RARITY_ENABLED && !event.is_bundle) {
+	if (NFTGO_ENABLED && !event.is_bundle) {
 		embed.addField('Last Sale', event.lastSale, false);
 		embed.setAuthor({
 			name: `NFTGO Rarity Rank: #${event.rank || 'N/A'}`,

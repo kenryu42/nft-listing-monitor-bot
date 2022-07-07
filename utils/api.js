@@ -4,6 +4,7 @@ import axios from 'axios';
 import retry from 'async-retry';
 import { ethers } from 'ethers';
 import {
+	NFTGO_ENABLED,
 	X2Y2_API_KEY,
 	OPENSEA_API_KEY,
 	NFTGO_API_KEY,
@@ -166,14 +167,37 @@ const getNftLastPrice = async (contractAddress, tokenId) => {
 	}
 };
 
+const getRankAndLastSale = async (contractAddress, tokenId) => {
+	if (!NFTGO_ENABLED) {
+		return {
+			rank: null,
+			lastSale: null
+		};
+	}
+	const rarity = await getNFTGORarity(contractAddress, tokenId);
+	const lastPrice = await getNftLastPrice(contractAddress, tokenId);
+	const price_usd = parseFloat(
+		_.get(lastPrice, 'price_usd').toFixed(2)
+	).toLocaleString('en-US');
+	const lastSale = lastPrice
+		? `\`${lastPrice.price_token} ${lastPrice.token_symbol} ($ ${price_usd})\` <t:${lastPrice.time}:R>`
+		: 'N/A';
+	const rank = _.get(rarity, 'rank');
+	console.log(`NFTGO Rarity Rank: #${rank}`);
+
+	return {
+		rank: rank,
+		lastSale: lastSale
+	};
+};
+
 export {
-	shortenAddress,
-	getNFTGORarity,
 	getUsdPrice,
-	getNftLastPrice,
+	shortenAddress,
 	getEpochTimestamp,
 	getX2Y2FloorPrice,
-	getX2Y2CollectionName,
+	getRankAndLastSale,
 	getOpenseaFloorPrice,
+	getX2Y2CollectionName,
 	getLooksRareFloorPrice
 };

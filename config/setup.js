@@ -20,7 +20,7 @@ const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
 const TWITTER_ACCESS_SECRET = process.env.TWITTER_ACCESS_SECRET;
 
 // NFTGO rarity setting if enable (optional)
-const RARITY_ENABLED = process.env.RARITY_ENABLED;
+const NFTGO_ENABLED = process.env.NFTGO_ENABLED;
 const NFTGO_API_KEY = process.env.NFTGO_API_KEY;
 
 // Error checking for required settings
@@ -40,8 +40,8 @@ if (X2Y2_API_KEY === undefined) {
 	);
 	console.log('https://github.com/kenryu42/opensea-nft-listing-bot#usage');
 	process.exit(1);
-} else if (RARITY_ENABLED && NFTGO_API_KEY === undefined) {
-	console.log('RARITY_ENABLED is true, but NFTGO_API_KEY is not set');
+} else if (NFTGO_ENABLED && NFTGO_API_KEY === undefined) {
+	console.log('NFTGO_ENABLED is true, but NFTGO_API_KEY is not set');
 	console.log(
 		'Please make sure you enter a valid NFTGO_API_KEY at (file:./.env)'
 	);
@@ -62,7 +62,7 @@ export {
 	OPENSEA_API_KEY,
 	ETHERSCAN_API_KEY,
 	NFTGO_API_KEY,
-	RARITY_ENABLED,
+	NFTGO_ENABLED,
 	DISCORD_ENABLED,
 	TWITTER_ENABLED,
 	TWITTER_API_KEY,
