@@ -146,10 +146,31 @@ const getNFTGORarity = async (contractAddress, tokenId) => {
 	}
 };
 
+const getNftLastPrice = async (contractAddress, tokenId) => {
+	const url = `https://api.nftgo.dev/eth/v1/nft/${contractAddress}/${tokenId}/metrics`;
+
+	try {
+		const response = await axios.get(url, {
+			headers: {
+				'X-API-KEY': NFTGO_API_KEY
+			}
+		});
+
+		const lastPrice = _.get(response, ['data', 'last_price']);
+
+		return lastPrice;
+	} catch (error) {
+		console.log('API error: ', error);
+
+		return null;
+	}
+};
+
 export {
 	shortenAddress,
 	getNFTGORarity,
 	getUsdPrice,
+	getNftLastPrice,
 	getEpochTimestamp,
 	getX2Y2FloorPrice,
 	getX2Y2CollectionName,

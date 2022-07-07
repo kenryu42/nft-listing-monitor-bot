@@ -8,10 +8,6 @@ const createEmbed = (event, market) => {
 		.setTitle(event.title)
 		.addField('Price', `\`${event.price} ETH ($ ${event.usdPrice})\``, true)
 		.addField('Floor', `\`${event.floorPrice} ETH\``, true)
-		.addField(
-			'Seller',
-			`[${event.seller}](${markets[market].account_site}${event.sellerAddr}${isX2Y2})`
-		)
 		.setURL(event.url)
 		.setImage(event.image)
 		.setColor(markets[market].color)
@@ -20,11 +16,8 @@ const createEmbed = (event, market) => {
 			text: markets[market].name,
 			iconURL: markets[market].iconURL
 		});
-	if (event.quantity > 1) {
-		embed.addField('Quantity', `\`${event.quantity}\``, false);
-	}
-
 	if (RARITY_ENABLED && !event.is_bundle) {
+		embed.addField('Last Sale', event.lastSale, false);
 		embed.setAuthor({
 			name: `NFTGO Rarity Rank: #${event.rank || 'N/A'}`,
 			iconURL:
@@ -32,6 +25,13 @@ const createEmbed = (event, market) => {
 			url: `https://nftgo.io/asset/ETH/${CONTRACT_ADDRESS}/${event.tokenId}`
 		});
 	}
+	if (event.quantity > 1) {
+		embed.addField('Quantity', `\`${event.quantity}\``, false);
+	}
+	embed.addField(
+		'Seller',
+		`[${event.seller}](${markets[market].account_site}${event.sellerAddr}${isX2Y2})`
+	);
 
 	return embed;
 };
