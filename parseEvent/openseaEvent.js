@@ -37,13 +37,12 @@ const openseaEvent = async (event, floorPrice) => {
 		tokenName = _.get(event, ['asset', 'name']);
 		url = _.get(event, ['asset', 'permalink']);
 	}
+	const title = `${tokenName} listed for ${price} ETH ($${usdPrice})${underFloor}`;
 	if (RARITY_ENABLED && !asset_bundle) {
 		const rarity = await getNFTGORarity(CONTRACT_ADDRESS, tokenId);
 		rank = _.get(rarity, 'rank');
-	}
-	const title = `${tokenName} listed for ${price} ETH ($${usdPrice})${underFloor}`;
-	if (RARITY_ENABLED && !asset_bundle)
 		console.log(`NFTGO Rarity Rank: #${rank}`);
+	}
 	console.log(`${tokenName} listed for ${price} Ξ ($${usdPrice}) on opensea\n`);
 
 	return {

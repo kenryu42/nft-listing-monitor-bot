@@ -4,7 +4,7 @@ import 'dotenv/config';
 const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY;
 const X2Y2_API_KEY = process.env.X2Y2_API_KEY;
 const COLLECTION_SLUG = process.env.COLLECTION_SLUG;
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS.toLowerCase();
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 // Discord setting if enable (optional)

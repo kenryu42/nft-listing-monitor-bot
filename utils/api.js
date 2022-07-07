@@ -75,6 +75,7 @@ const getLooksRareFloorPrice = async (contractAddress) => {
 		return null;
 	} catch (error) {
 		console.log(error);
+		return null;
 	}
 };
 
@@ -93,7 +94,8 @@ const getX2Y2FloorPrice = async (contractAddress) => {
 
 		return floorPrice;
 	} catch (error) {
-		throw new Error('X2Y2 API error: getX2Y2FloorPrice()');
+		console.log('X2Y2 API error: getX2Y2FloorPrice()');
+		return null;
 	}
 };
 
