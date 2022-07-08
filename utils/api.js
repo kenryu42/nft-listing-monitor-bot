@@ -27,8 +27,13 @@ https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API
 			const result = _.get(response, ['data', 'result']);
 			const ethusd = _.get(result, 'ethusd');
 			const usdPrice = (ethPrice * ethusd).toFixed(2);
+			const res = parseFloat(usdPrice).toLocaleString('en-US');
 
-			return parseFloat(usdPrice).toLocaleString('en-US');
+			if (isNaN(res)) {
+				throw new Error('NaN');
+			}
+
+			return res;
 		},
 		{
 			retries: 5
