@@ -183,9 +183,9 @@ const getRankAndLastSale = async (contractAddress, tokenId) => {
 	}
 	const rarity = await getNFTGORarity(contractAddress, tokenId);
 	const lastPrice = await getNftLastPrice(contractAddress, tokenId);
-	const price_usd = parseFloat(
-		_.get(lastPrice, 'price_usd').toFixed(2)
-	).toLocaleString('en-US');
+	const price_usd = lastPrice
+		? parseFloat(_.get(lastPrice, 'price_usd').toFixed(2)).toLocaleString()
+		: null;
 	const lastSale = lastPrice
 		? `\`${lastPrice.price_token} ${lastPrice.token_symbol} ($ ${price_usd})\` <t:${lastPrice.time}:R>`
 		: 'N/A';
