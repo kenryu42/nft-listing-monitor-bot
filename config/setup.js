@@ -34,6 +34,11 @@ if (X2Y2_API_KEY === undefined) {
 		'Please make sure you enter a valid OPENSEA_API_KEY at (file:./.env)'
 	);
 	process.exit(1);
+} else if (ETHERSCAN_API_KEY === undefined) {
+	console.log(
+		'Please make sure you enter a valid ETHERSCAN_API_KEY at (file:./.env)'
+	);
+	process.exit(1);
 } else if (COLLECTION_SLUG === undefined) {
 	console.log(
 		'Please make sure you enter a valid COLLECTION_SLUG at (file:./.env)'

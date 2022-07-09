@@ -26,7 +26,6 @@ const looksrareEvent = async (event, floorPrice, ethUsd) => {
 		tokenId
 	);
 
-	console.log(`ethUSd: ${ethUsd}`);
 	console.log(
 		`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on LooksRare.\n`
 	);

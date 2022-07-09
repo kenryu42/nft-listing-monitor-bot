@@ -25,7 +25,6 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 		tokenId
 	);
 
-	console.log(`ethUSd: ${ethUsd}`);
 	console.log(`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on x2y2\n`);
 
 	return {

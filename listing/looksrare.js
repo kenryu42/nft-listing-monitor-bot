@@ -49,7 +49,7 @@ async function get_listings(floorPrice, ethUsd) {
 			sendEmbed(WEBHOOK_URLS, embeds);
 		}
 	} catch (err) {
-		console.log('Looksrare API error');
+		console.log('Looksrare listing API error');
 	}
 }
 
@@ -58,7 +58,6 @@ async function monitorLooksrareListing() {
 	while (true) {
 		const floorPrice = await getLooksRareFloorPrice(CONTRACT_ADDRESS);
 		const ethUsd = await getEthUsd();
-		console.log(`LR Floor: ${floorPrice}\nethUsd: ${ethUsd}`);
 
 		await get_listings(floorPrice, ethUsd);
 	}

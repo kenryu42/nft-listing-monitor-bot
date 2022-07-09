@@ -71,7 +71,6 @@ async function monitorOpenseaListing() {
 		const occurredAfter = getEpochTimestamp() - 5;
 		const floorPrice = await getOpenseaFloorPrice(COLLECTION_SLUG);
 		const ethUsd = await getEthUsd();
-		console.log(`OS Floor: ${floorPrice}\nethUsd: ${ethUsd}`);
 
 		await get_listings(occurredAfter, floorPrice, ethUsd);
 	}, INTERVAL);
