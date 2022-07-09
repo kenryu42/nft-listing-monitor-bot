@@ -80,6 +80,7 @@ async function monitorX2Y2Listing() {
 		const createdAfter = getEpochTimestamp() - 5;
 		const floorPrice = await getX2Y2FloorPrice(CONTRACT_ADDRESS);
 		const ethUsd = await getEthUsd();
+		console.log(`XY Floor: ${floorPrice}\nethUsd: ${ethUsd}`);
 
 		await get_listings(createdAfter, floorPrice, collectionName, ethUsd);
 	}, INTERVAL);

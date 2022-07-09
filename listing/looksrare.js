@@ -58,6 +58,7 @@ async function monitorLooksrareListing() {
 	while (true) {
 		const floorPrice = await getLooksRareFloorPrice(CONTRACT_ADDRESS);
 		const ethUsd = await getEthUsd();
+		console.log(`LR Floor: ${floorPrice}\nethUsd: ${ethUsd}`);
 
 		await get_listings(floorPrice, ethUsd);
 	}

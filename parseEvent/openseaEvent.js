@@ -19,7 +19,10 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 	const sellerAddr = _.get(event, ['seller', 'address']);
 	const seller =
 		_.get(event, ['seller', 'user', 'username']) || shortenAddress(sellerAddr);
-	const underFloor = ethPrice < floorPrice ? ' LOWER THAN FLOOR 🔥🔥🔥' : '';
+	const underFloor =
+		parseFloat(ethPrice) < parseFloat(floorPrice)
+			? ' LOWER THAN FLOOR 🔥🔥🔥'
+			: '';
 
 	if (asset_bundle) {
 		const assets = _.get(asset_bundle, 'assets');

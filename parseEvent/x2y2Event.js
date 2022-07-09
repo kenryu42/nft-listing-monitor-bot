@@ -15,7 +15,10 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 	});
 	const sellerAddr = _.get(event, 'from_address');
 	const seller = shortenAddress(sellerAddr);
-	const underFloor = ethPrice < floorPrice ? ' LOWER THAN FLOOR 🔥🔥🔥' : '';
+	const underFloor =
+		parseFloat(ethPrice) < parseFloat(floorPrice)
+			? ' LOWER THAN FLOOR 🔥🔥🔥'
+			: '';
 	const title = `${tokenName} listed for ${ethPrice} ETH ($${usdPrice})${underFloor}`;
 	const { rank, lastSale } = await getRankAndLastSale(
 		CONTRACT_ADDRESS,
