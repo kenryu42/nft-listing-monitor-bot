@@ -29,9 +29,11 @@ https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API
 			// const usdPrice = (ethPrice * ethusd).toFixed(2);
 			// const res = parseFloat(usdPrice).toLocaleString('en-US');
 
+			/*
 			if (isNaN(ethUsd)) {
 				throw new Error('NaN');
 			}
+			*/
 
 			return ethUsd;
 		},
