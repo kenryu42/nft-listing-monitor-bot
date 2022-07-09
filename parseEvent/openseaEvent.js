@@ -43,6 +43,7 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 		tokenId
 	);
 
+	console.log(`ethUSd: ${ethUsd}`);
 	console.log(
 		`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on opensea\n`
 	);
