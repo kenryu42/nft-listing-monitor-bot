@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import fetch from 'node-fetch';
 import axios from 'axios';
-import retry from 'async-retry';
 import { ethers } from 'ethers';
 import {
 	NFTGO_ENABLED,
@@ -21,28 +20,17 @@ const getEthUsd = async () => {
 	const url = `
 https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API_KEY}
 `;
-	const result = await retry(
-		async () => {
-			const response = await axios.get(url);
-			const result = _.get(response, ['data', 'result']);
-			const ethUsd = _.get(result, 'ethusd');
-			// const usdPrice = (ethPrice * ethusd).toFixed(2);
-			// const res = parseFloat(usdPrice).toLocaleString('en-US');
+	try {
+		const response = await axios.get(url);
+		const result = _.get(response, ['data', 'result']);
+		const ethUsd = _.get(result, 'ethusd');
 
-			/*
-			if (isNaN(ethUsd)) {
-				throw new Error('NaN');
-			}
-			*/
+		return ethUsd;
+	} catch (error) {
+		console.log('getEthUsd API error: ', error);
 
-			return ethUsd;
-		},
-		{
-			retries: 5
-		}
-	);
-
-	return result;
+		return null;
+	}
 };
 
 const getOpenseaFloorPrice = async (collection_slug) => {
