@@ -9,7 +9,9 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 	const image = `https://img.x2y2.io/v2/1/${CONTRACT_ADDRESS}/${tokenId}/1440/image.jpg`;
 	const url = `https://x2y2.io/eth/${CONTRACT_ADDRESS}/${tokenId}`;
 	const ethPrice = ethers.utils.formatEther(_.get(event, ['order', 'price']));
-	const usdPrice = parseFloat((ethUsd * ethPrice).toFixed(2)).toLocaleString();
+	const usdPrice = parseFloat(ethUsd * ethPrice).toLocaleString('en-US', {
+		minimumFractionDigits: 2
+	});
 	const sellerAddr = _.get(event, 'from_address');
 	const seller = shortenAddress(sellerAddr);
 	const underFloor = ethPrice < floorPrice ? ' LOWER THAN FLOOR 🔥🔥🔥' : '';

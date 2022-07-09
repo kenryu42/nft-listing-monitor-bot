@@ -10,7 +10,9 @@ const looksrareEvent = async (event, floorPrice, ethUsd) => {
 	const image = _.get(event, ['token', 'imageURI']);
 	const url = `${markets['looksrare'].site}${CONTRACT_ADDRESS}/${tokenId}`;
 	const ethPrice = ethers.utils.formatEther(_.get(event, ['order', 'price']));
-	const usdPrice = parseFloat((ethUsd * ethPrice).toFixed(2)).toLocaleString();
+	const usdPrice = parseFloat(ethUsd * ethPrice).toLocaleString('en-US', {
+		minimumFractionDigits: 2
+	});
 	const sellerAddr = _.get(event, ['order', 'signer']);
 	const seller = shortenAddress(sellerAddr);
 	const underFloor = ethPrice < floorPrice ? ' LOWER THAN FLOOR 🔥🔥🔥' : '';
