@@ -2,6 +2,7 @@ import axios from 'axios';
 import { setTimeout } from 'timers/promises';
 import {
 	getEpochTimestamp,
+	getEthUsd,
 	getX2Y2CollectionName,
 	getX2Y2FloorPrice
 } from '../utils/api.js';
@@ -19,7 +20,7 @@ import { tweet } from '../notify/twitter.js';
 let lastSeen = null;
 const INTERVAL = 5000;
 
-async function get_listings(createdAfter, floorPrice, collectionName) {
+async function get_listings(createdAfter, floorPrice, collectionName, ethUsd) {
 	const url = 'https://api.x2y2.org/v1/events';
 	const options = {
 		params: {
@@ -48,7 +49,12 @@ async function get_listings(createdAfter, floorPrice, collectionName) {
 				const created_date = event.created_at;
 				if (created_date <= lastSeen) continue;
 				lastSeen = created_date;
-				const eventData = await x2y2Event(event, floorPrice, collectionName);
+				const eventData = await x2y2Event(
+					event,
+					floorPrice,
+					collectionName,
+					ethUsd
+				);
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'x2y2'));
@@ -73,8 +79,9 @@ async function monitorX2Y2Listing() {
 	setInterval(async () => {
 		const createdAfter = getEpochTimestamp() - 5;
 		const floorPrice = await getX2Y2FloorPrice(CONTRACT_ADDRESS);
+		const ethUsd = await getEthUsd();
 
-		await get_listings(createdAfter, floorPrice, collectionName);
+		await get_listings(createdAfter, floorPrice, collectionName, ethUsd);
 	}, INTERVAL);
 }
 

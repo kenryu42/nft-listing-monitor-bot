@@ -2,19 +2,15 @@ import _ from 'lodash';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS } from '../config/setup.js';
 import { markets } from '../config/markets.js';
-import {
-	getUsdPrice,
-	shortenAddress,
-	getRankAndLastSale
-} from '../utils/api.js';
+import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
 
-const looksrareEvent = async (event, floorPrice) => {
+const looksrareEvent = async (event, floorPrice, ethUsd) => {
 	const tokenId = _.get(event, ['token', 'tokenId']);
 	const tokenName = _.get(event, ['token', 'name']);
 	const image = _.get(event, ['token', 'imageURI']);
 	const url = `${markets['looksrare'].site}${CONTRACT_ADDRESS}/${tokenId}`;
 	const ethPrice = ethers.utils.formatEther(_.get(event, ['order', 'price']));
-	const usdPrice = await getUsdPrice(ethPrice);
+	const usdPrice = parseFloat((ethUsd * ethPrice).toFixed(2)).toLocaleString();
 	const sellerAddr = _.get(event, ['order', 'signer']);
 	const seller = shortenAddress(sellerAddr);
 	const underFloor = ethPrice < floorPrice ? ' LOWER THAN FLOOR 🔥🔥🔥' : '';

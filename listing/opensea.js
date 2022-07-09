@@ -1,6 +1,10 @@
 import fetch from 'node-fetch';
 import { setTimeout } from 'timers/promises';
-import { getEpochTimestamp, getOpenseaFloorPrice } from '../utils/api.js';
+import {
+	getEthUsd,
+	getEpochTimestamp,
+	getOpenseaFloorPrice
+} from '../utils/api.js';
 import {
 	WEBHOOK_URLS,
 	DISCORD_ENABLED,
@@ -15,7 +19,7 @@ import { tweet } from '../notify/twitter.js';
 let lastSeen = null;
 const INTERVAL = 5000;
 
-async function get_listings(occurredAfter, floorPrice) {
+async function get_listings(occurredAfter, floorPrice, ethUsd) {
 	const options = {
 		method: 'GET',
 		headers: {
@@ -42,8 +46,7 @@ async function get_listings(occurredAfter, floorPrice) {
 				const created_date = new Date(event.created_date).valueOf();
 				if (created_date <= lastSeen) continue;
 				lastSeen = created_date;
-				const eventData = await openseaEvent(event, floorPrice);
-				// if (eventData === null) continue;
+				const eventData = await openseaEvent(event, floorPrice, ethUsd);
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'opensea'));
@@ -56,7 +59,7 @@ async function get_listings(occurredAfter, floorPrice) {
 				sendEmbed(WEBHOOK_URLS, embeds);
 			}
 		} catch (err) {
-			console.log('Opensea API error:');
+			console.log('Opensea API error:', err);
 			break;
 		}
 	} while (nextPage != null);
@@ -67,8 +70,9 @@ async function monitorOpenseaListing() {
 	setInterval(async () => {
 		const occurredAfter = getEpochTimestamp() - 5;
 		const floorPrice = await getOpenseaFloorPrice(COLLECTION_SLUG);
+		const ethUsd = await getEthUsd();
 
-		await get_listings(occurredAfter, floorPrice);
+		await get_listings(occurredAfter, floorPrice, ethUsd);
 	}, INTERVAL);
 }
 

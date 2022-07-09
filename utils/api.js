@@ -17,7 +17,7 @@ const shortenAddress = (address) => {
 	);
 };
 
-const getUsdPrice = async (ethPrice) => {
+const getEthUsd = async () => {
 	const url = `
 https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API_KEY}
 `;
@@ -25,15 +25,15 @@ https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API
 		async () => {
 			const response = await axios.get(url);
 			const result = _.get(response, ['data', 'result']);
-			const ethusd = _.get(result, 'ethusd');
-			const usdPrice = (ethPrice * ethusd).toFixed(2);
-			const res = parseFloat(usdPrice).toLocaleString('en-US');
+			const ethUsd = _.get(result, 'ethusd');
+			// const usdPrice = (ethPrice * ethusd).toFixed(2);
+			// const res = parseFloat(usdPrice).toLocaleString('en-US');
 
-			if (isNaN(res)) {
+			if (isNaN(ethUsd)) {
 				throw new Error('NaN');
 			}
 
-			return res;
+			return ethUsd;
 		},
 		{
 			retries: 5
@@ -197,7 +197,7 @@ const getRankAndLastSale = async (contractAddress, tokenId) => {
 };
 
 export {
-	getUsdPrice,
+	getEthUsd,
 	shortenAddress,
 	getEpochTimestamp,
 	getX2Y2FloorPrice,

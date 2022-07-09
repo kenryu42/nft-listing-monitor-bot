@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { setTimeout } from 'timers/promises';
-import { getEpochTimestamp, getLooksRareFloorPrice } from '../utils/api.js';
+import {
+	getEpochTimestamp,
+	getEthUsd,
+	getLooksRareFloorPrice
+} from '../utils/api.js';
 import {
 	WEBHOOK_URLS,
 	DISCORD_ENABLED,
@@ -13,8 +17,8 @@ import { tweet } from '../notify/twitter.js';
 
 let lastSeen = getEpochTimestamp();
 
-async function get_listings(floorPrice) {
-	await setTimeout(1000);
+async function get_listings(floorPrice, ethUsd) {
+	await setTimeout(3000);
 	try {
 		const first = 5;
 		const embeds = [];
@@ -30,7 +34,7 @@ async function get_listings(floorPrice) {
 
 			if (startTime > lastSeen) {
 				if (!temp) temp = startTime;
-				const eventData = await looksrareEvent(event, floorPrice);
+				const eventData = await looksrareEvent(event, floorPrice, ethUsd);
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'looksrare'));
@@ -53,8 +57,9 @@ async function monitorLooksrareListing() {
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		const floorPrice = await getLooksRareFloorPrice(CONTRACT_ADDRESS);
+		const ethUsd = await getEthUsd();
 
-		await get_listings(floorPrice);
+		await get_listings(floorPrice, ethUsd);
 	}
 }
 
