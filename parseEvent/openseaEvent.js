@@ -13,7 +13,8 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 	const tokenId = _.get(event, ['asset', 'token_id']);
 	const ethPrice = ethers.utils.formatEther(_.get(event, 'ending_price'));
 	const usdPrice = parseFloat(ethUsd * ethPrice).toLocaleString('en-US', {
-		minimumFractionDigits: 2
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, ['seller', 'address']);
 	const seller =

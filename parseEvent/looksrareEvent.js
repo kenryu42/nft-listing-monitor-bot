@@ -11,7 +11,8 @@ const looksrareEvent = async (event, floorPrice, ethUsd) => {
 	const url = `${markets['looksrare'].site}${CONTRACT_ADDRESS}/${tokenId}`;
 	const ethPrice = ethers.utils.formatEther(_.get(event, ['order', 'price']));
 	const usdPrice = parseFloat(ethUsd * ethPrice).toLocaleString('en-US', {
-		minimumFractionDigits: 2
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, ['order', 'signer']);
 	const seller = shortenAddress(sellerAddr);

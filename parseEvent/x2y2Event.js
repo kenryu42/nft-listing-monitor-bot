@@ -10,7 +10,8 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 	const url = `https://x2y2.io/eth/${CONTRACT_ADDRESS}/${tokenId}`;
 	const ethPrice = ethers.utils.formatEther(_.get(event, ['order', 'price']));
 	const usdPrice = parseFloat(ethUsd * ethPrice).toLocaleString('en-US', {
-		minimumFractionDigits: 2
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, 'from_address');
 	const seller = shortenAddress(sellerAddr);
