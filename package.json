@@ -12,12 +12,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kenryu42/opensea-nft-listing-bot.git"
+		"url": "git+https://github.com/kenryu42/nft-listing-monitor-bot.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
-	"homepage": "https://github.com/kenryu42/opensea-nft-listing-bot#readme",
+	"homepage": "https://github.com/kenryu42/nft-listing-monitor-bot#readme",
 	"dependencies": {
 		"axios": "^0.27.2",
 		"discord.js": "^13.7.0",
