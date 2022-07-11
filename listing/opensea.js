@@ -58,8 +58,14 @@ async function get_listings(occurredAfter, floorPrice, ethUsd) {
 			if (DISCORD_ENABLED) {
 				sendEmbed(WEBHOOK_URLS, embeds);
 			}
-		} catch (err) {
-			console.log('Opensea API error:', err);
+		} catch (error) {
+			if (error.response) {
+				console.error(error.response.data);
+				console.error(error.response.status);
+			} else {
+				console.error(error.message);
+			}
+			console.log('Opensea Listing API error');
 			break;
 		}
 	} while (nextPage != null);

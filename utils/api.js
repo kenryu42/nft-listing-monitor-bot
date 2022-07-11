@@ -27,7 +27,12 @@ https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ETHERSCAN_API
 
 		return ethUsd;
 	} catch (error) {
-		console.log('getEthUsd API error: ', error);
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
 
 		return null;
 	}
@@ -48,7 +53,14 @@ const getOpenseaFloorPrice = async (collection_slug) => {
 
 		return _.get(res, ['stats', 'floor_price']);
 	} catch (error) {
-		console.log(error);
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
+
+		return null;
 	}
 };
 
@@ -70,7 +82,13 @@ const getLooksRareFloorPrice = async (contractAddress) => {
 
 		return null;
 	} catch (error) {
-		console.log(error);
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
+
 		return null;
 	}
 };
@@ -90,7 +108,12 @@ const getX2Y2FloorPrice = async (contractAddress) => {
 
 		return floorPrice;
 	} catch (error) {
-		console.log('X2Y2 API error: getX2Y2FloorPrice()');
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
 		return null;
 	}
 };
@@ -108,6 +131,12 @@ const getX2Y2CollectionName = async (contractAddress) => {
 
 		return collectionName;
 	} catch (error) {
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
 		throw new Error('X2Y2 API error: getX2Y2CollectionName()');
 	}
 };
@@ -133,11 +162,12 @@ const getNFTGORarity = async (contractAddress, tokenId) => {
 		return data;
 	} catch (error) {
 		if (error.response) {
-			console.log(error.response.data);
-			console.log(error.response.status);
+			console.error(error.response.data);
+			console.error(error.response.status);
 		} else {
 			console.error(error.message);
 		}
+
 		return null;
 	}
 };
@@ -156,7 +186,12 @@ const getNftLastPrice = async (contractAddress, tokenId) => {
 
 		return lastPrice;
 	} catch (error) {
-		console.log('API error: ', error);
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
 
 		return null;
 	}

@@ -66,8 +66,14 @@ async function get_listings(createdAfter, floorPrice, collectionName, ethUsd) {
 			if (DISCORD_ENABLED) {
 				sendEmbed(WEBHOOK_URLS, embeds);
 			}
-		} catch (err) {
-			console.log('X2Y2 API error: get listing events');
+		} catch (error) {
+			if (error.response) {
+				console.error(error.response.data);
+				console.error(error.response.status);
+			} else {
+				console.error(error.message);
+			}
+			console.log('X2Y2 listing API error');
 			break;
 		}
 	} while (nextPage != null);

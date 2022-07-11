@@ -48,7 +48,13 @@ async function get_listings(floorPrice, ethUsd) {
 		if (DISCORD_ENABLED) {
 			sendEmbed(WEBHOOK_URLS, embeds);
 		}
-	} catch (err) {
+	} catch (error) {
+		if (error.response) {
+			console.error(error.response.data);
+			console.error(error.response.status);
+		} else {
+			console.error(error.message);
+		}
 		console.log('Looksrare listing API error');
 	}
 }
