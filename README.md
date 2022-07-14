@@ -7,7 +7,7 @@ NFT listing monitor bot of the marketplace.
 ## Market Coverage
 
 - [Opensea](https://opensea.io/)
-  <img src="https://pbs.twimg.com/profile_images/1533843334946508806/kleAruEh_400x400.png" width="13"/>
+  <img src="https://pbs.twimg.com/profile_images/1544105652330631168/ZuvjfGkT_400x400.png" width="13"/>
 
 - [Looksrare](https://looksrare.org/)
   <img src="https://pbs.twimg.com/profile_images/1493172984240308225/Nt6RFdmb_400x400.jpg" width="13"/>
@@ -17,6 +17,8 @@ NFT listing monitor bot of the marketplace.
 
 ## Prerequisites
 
+- Install [Node.js](https://nodejs.org) version 16
+  - If you are using [nvm](https://github.com/creationix/nvm#installation) (recommended) running `nvm use` will automatically choose the right node version for you.
 - Opensea API Key - [apply here](https://docs.opensea.io/reference/request-an-api-key)
 - X2Y2 API Key - [apply here](https://docs.x2y2.io/developers/api)
 - Etherscan API Key - [apply here](https://etherscan.io/register)
@@ -64,8 +66,6 @@ DISCORD_ENABLED=1
 
 > Create an `.env` file in the root directory of the project with the following contents:
 
-**Do not commit/include your .env file in your repository.**
-
 ```
 COLLECTION_SLUG=
 CONTRACT_ADDRESS=
@@ -77,7 +77,11 @@ TWITTER_API_SECRET=
 TWITTER_ACCESS_TOKEN=
 TWITTER_ACCESS_SECRET=
 WEBHOOK_URL=
+DISCORD_ENABLED=
+TWITTER_ENABLED=
 ```
+
+**Do not commit/include your .env file in your repository.**
 
 To find the collection slug, visit the collection page on Opensea. You will see the collection slug in the URL.
 

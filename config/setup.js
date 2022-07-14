@@ -4,7 +4,9 @@ import 'dotenv/config';
 const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY;
 const X2Y2_API_KEY = process.env.X2Y2_API_KEY;
 const COLLECTION_SLUG = process.env.COLLECTION_SLUG;
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS.toLowerCase();
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS
+	? process.env.CONTRACT_ADDRESS.toLowerCase()
+	: null;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 // Discord setting if enable (optional)
@@ -24,40 +26,52 @@ const NFTGO_ENABLED = process.env.NFTGO_ENABLED;
 const NFTGO_API_KEY = process.env.NFTGO_API_KEY;
 
 // Error checking for required settings
-if (X2Y2_API_KEY === undefined) {
-	console.log(
-		'Please make sure you enter a valid X2Y2_API_KEY at (file:./.env)'
-	);
-	process.exit(1);
-} else if (OPENSEA_API_KEY === undefined) {
-	console.log(
-		'Please make sure you enter a valid OPENSEA_API_KEY at (file:./.env)'
-	);
-	process.exit(1);
-} else if (ETHERSCAN_API_KEY === undefined) {
-	console.log(
-		'Please make sure you enter a valid ETHERSCAN_API_KEY at (file:./.env)'
-	);
-	process.exit(1);
-} else if (COLLECTION_SLUG === undefined) {
-	console.log(
-		'Please make sure you enter a valid COLLECTION_SLUG at (file:./.env)'
-	);
-	console.log('https://github.com/kenryu42/opensea-nft-listing-bot#usage');
-	process.exit(1);
-} else if (NFTGO_ENABLED && NFTGO_API_KEY === undefined) {
-	console.log('NFTGO_ENABLED is true, but NFTGO_API_KEY is not set');
-	console.log(
-		'Please make sure you enter a valid NFTGO_API_KEY at (file:./.env)'
-	);
-	process.exit(1);
-} else if (DISCORD_ENABLED && WEBHOOK_URLS.length === 0) {
-	console.log('DISCORD_ENABLED is true, but WEBHOOK_URLS is empty');
-	console.log(
-		'Please make sure you enter a valid WEBHOOK_URL at (file:./.env)'
-	);
-	process.exit(1);
+const requiredSettings = {
+	X2Y2_API_KEY: X2Y2_API_KEY,
+	OPENSEA_API_KEY: OPENSEA_API_KEY,
+	COLLECTION_SLUG: COLLECTION_SLUG,
+	CONTRACT_ADDRESS: CONTRACT_ADDRESS,
+	ETHERSCAN_API_KEY: ETHERSCAN_API_KEY
+};
+
+const twitterSettings = {
+	TWITTER_API_KEY: TWITTER_API_KEY,
+	TWITTER_API_SECRET: TWITTER_API_SECRET,
+	TWITTER_ACCESS_TOKEN: TWITTER_ACCESS_TOKEN,
+	TWITTER_ACCESS_SECRET: TWITTER_ACCESS_SECRET
+};
+
+let requirementsNotMatched = false;
+
+for (const setting in requiredSettings) {
+	if (!requiredSettings[setting]) {
+		console.log(
+			`Please make sure you enter a valid ${setting} at (file:./.env)`
+		);
+		requirementsNotMatched = true;
+	}
 }
+if (DISCORD_ENABLED && WEBHOOK_URLS.length === 0) {
+	console.log(
+		`Please make sure you enter a valid WEBHOOK_URL at (file:./.env)`
+	);
+	requirementsNotMatched = true;
+}
+if (NFTGO_ENABLED && !NFTGO_API_KEY) {
+	console.log(
+		`Please make sure you enter a valid NFTGO_API_KEY at (file:./.env)`
+	);
+	requirementsNotMatched = true;
+}
+for (const setting in twitterSettings) {
+	if (TWITTER_ENABLED && !twitterSettings[setting]) {
+		console.log(
+			`Please make sure you enter a valid ${setting} at (file:./.env)`
+		);
+		requirementsNotMatched = true;
+	}
+}
+if (requirementsNotMatched) process.exit(1);
 
 export {
 	WEBHOOK_URLS,
