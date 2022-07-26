@@ -6,8 +6,12 @@ const createEmbed = (event, market) => {
 	const isX2Y2 = market === 'x2y2' ? '/items' : '';
 	const embed = new MessageEmbed()
 		.setTitle(event.title)
-		.addField('Price', `\`${event.price} ETH ($ ${event.usdPrice})\``, true)
-		.addField('Floor', `\`${event.floorPrice} ETH\``, true)
+		.addField(
+			'Price',
+			`\`${event.price} ETH ($ ${event.usdPrice || '-'})\``,
+			true
+		)
+		.addField('Floor', `\`${event.floorPrice || '-'} ETH\``, true)
 		.setURL(event.url)
 		.setImage(event.image)
 		.setColor(markets[market].color)
