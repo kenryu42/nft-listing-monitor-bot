@@ -25,6 +25,11 @@ const TWITTER_ACCESS_SECRET = process.env.TWITTER_ACCESS_SECRET;
 const NFTGO_ENABLED = process.env.NFTGO_ENABLED;
 const NFTGO_API_KEY = process.env.NFTGO_API_KEY;
 
+// Blacklist to avoid spamming (optional)
+const BLACK_LIST = process.env.BLACK_LIST
+	? process.env.BLACK_LIST.toLowerCase()
+	: '';
+
 // Error checking for required settings
 const requiredSettings = {
 	X2Y2_API_KEY: X2Y2_API_KEY,
@@ -74,6 +79,7 @@ for (const setting in twitterSettings) {
 if (requirementsNotMatched) process.exit(1);
 
 export {
+	BLACK_LIST,
 	WEBHOOK_URLS,
 	COLLECTION_SLUG,
 	CONTRACT_ADDRESS,

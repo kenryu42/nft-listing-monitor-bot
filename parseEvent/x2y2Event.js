@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
-import { CONTRACT_ADDRESS } from '../config/setup.js';
+import { CONTRACT_ADDRESS, BLACK_LIST } from '../config/setup.js';
 import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
 
 const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
@@ -14,6 +14,10 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, 'from_address');
+	if (BLACK_LIST.includes(sellerAddr.toLowerCase())) {
+		console.log(`Seller ${sellerAddr} is blacklisted, skipping...`);
+		return null;
+	}
 	const seller = shortenAddress(sellerAddr);
 	const underFloor =
 		parseFloat(ethPrice) < parseFloat(floorPrice)

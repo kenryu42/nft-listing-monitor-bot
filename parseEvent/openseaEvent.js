@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
-import { CONTRACT_ADDRESS } from '../config/setup.js';
+import { CONTRACT_ADDRESS, BLACK_LIST } from '../config/setup.js';
 import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
 
 const openseaEvent = async (event, floorPrice, ethUsd) => {
@@ -17,6 +17,10 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, ['seller', 'address']);
+	if (BLACK_LIST.includes(sellerAddr.toLowerCase())) {
+		console.log(`Seller ${sellerAddr} is blacklisted, skipping...`);
+		return null;
+	}
 	const seller =
 		_.get(event, ['seller', 'user', 'username']) || shortenAddress(sellerAddr);
 	const underFloor =

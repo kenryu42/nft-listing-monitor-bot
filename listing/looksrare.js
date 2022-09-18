@@ -35,6 +35,7 @@ async function get_listings(floorPrice, ethUsd) {
 			if (startTime > lastSeen) {
 				if (!temp) temp = startTime;
 				const eventData = await looksrareEvent(event, floorPrice, ethUsd);
+				if (!eventData) continue;
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'looksrare'));

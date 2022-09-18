@@ -55,6 +55,7 @@ async function get_listings(createdAfter, floorPrice, collectionName, ethUsd) {
 					collectionName,
 					ethUsd
 				);
+				if (!eventData) continue;
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'x2y2'));

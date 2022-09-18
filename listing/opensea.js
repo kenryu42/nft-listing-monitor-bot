@@ -47,6 +47,7 @@ async function get_listings(occurredAfter, floorPrice, ethUsd) {
 				if (created_date <= lastSeen) continue;
 				lastSeen = created_date;
 				const eventData = await openseaEvent(event, floorPrice, ethUsd);
+				if (!eventData) continue;
 
 				if (DISCORD_ENABLED) {
 					embeds.push(createEmbed(eventData, 'opensea'));
