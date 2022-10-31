@@ -13,7 +13,7 @@ const markets = {
 		site: 'https://opensea.io/assets/',
 		account_site: 'https://opensea.io/',
 		iconURL:
-			'https://pbs.twimg.com/profile_images/1533843334946508806/kleAruEh_400x400.png'
+			'https://pbs.twimg.com/profile_images/1544105652330631168/ZuvjfGkT_400x400.png'
 	},
 	looksrare: {
 		name: 'LooksRare 👀💎',

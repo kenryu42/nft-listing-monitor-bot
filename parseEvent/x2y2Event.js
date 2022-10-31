@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, BLACK_LIST } from '../config/setup.js';
-import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
+import { shortenAddress } from '../utils/api.js';
 
 const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 	const tokenId = _.get(event, ['token', 'token_id']);
@@ -24,22 +24,16 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 			? ' LOWER THAN FLOOR 🔥🔥🔥'
 			: '';
 	const title = `${tokenName} listed for ${ethPrice} ETH ($${usdPrice})${underFloor}`;
-	const { rank, lastSale } = await getRankAndLastSale(
-		CONTRACT_ADDRESS,
-		tokenId
-	);
 
 	console.log(`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on x2y2\n`);
 
 	return {
-		rank: rank,
 		tokenId: tokenId,
 		quantity: 1,
 		title: title,
 		image: image,
 		url: url,
 		price: ethPrice,
-		lastSale: lastSale,
 		usdPrice: usdPrice,
 		floorPrice: floorPrice,
 		seller: seller,

@@ -21,10 +21,6 @@ const TWITTER_API_SECRET = process.env.TWITTER_API_SECRET;
 const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
 const TWITTER_ACCESS_SECRET = process.env.TWITTER_ACCESS_SECRET;
 
-// NFTGO rarity setting if enable (optional)
-const NFTGO_ENABLED = process.env.NFTGO_ENABLED;
-const NFTGO_API_KEY = process.env.NFTGO_API_KEY;
-
 // Blacklist to avoid spamming (optional)
 const BLACK_LIST = process.env.BLACK_LIST
 	? process.env.BLACK_LIST.toLowerCase()
@@ -56,18 +52,14 @@ for (const setting in requiredSettings) {
 		requirementsNotMatched = true;
 	}
 }
+
 if (DISCORD_ENABLED && WEBHOOK_URLS.length === 0) {
 	console.log(
 		`Please make sure you enter a valid WEBHOOK_URL at (file:./.env)`
 	);
 	requirementsNotMatched = true;
 }
-if (NFTGO_ENABLED && !NFTGO_API_KEY) {
-	console.log(
-		`Please make sure you enter a valid NFTGO_API_KEY at (file:./.env)`
-	);
-	requirementsNotMatched = true;
-}
+
 for (const setting in twitterSettings) {
 	if (TWITTER_ENABLED && !twitterSettings[setting]) {
 		console.log(
@@ -76,6 +68,7 @@ for (const setting in twitterSettings) {
 		requirementsNotMatched = true;
 	}
 }
+
 if (requirementsNotMatched) process.exit(1);
 
 export {
@@ -86,8 +79,6 @@ export {
 	X2Y2_API_KEY,
 	OPENSEA_API_KEY,
 	ETHERSCAN_API_KEY,
-	NFTGO_API_KEY,
-	NFTGO_ENABLED,
 	DISCORD_ENABLED,
 	TWITTER_ENABLED,
 	TWITTER_API_KEY,

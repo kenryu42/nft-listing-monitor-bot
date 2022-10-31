@@ -3,10 +3,8 @@ import fetch from 'node-fetch';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import {
-	NFTGO_ENABLED,
 	X2Y2_API_KEY,
 	OPENSEA_API_KEY,
-	NFTGO_API_KEY,
 	ETHERSCAN_API_KEY
 } from '../config/setup.js';
 
@@ -147,44 +145,47 @@ const getEpochTimestamp = (timestamp) => {
 	return Math.floor(date.getTime() / 1000);
 };
 
-const getNFTGORarity = async (contractAddress, tokenId) => {
-	const baseURL = `https://api.nftgo.dev/eth/v1/nft/${contractAddress}/${tokenId}/rarity`;
+const openRarityHelper = (percentage) => {
+	let result = '';
 
-	try {
-		const response = await axios.get(baseURL, {
-			headers: {
-				'X-API-KEY': NFTGO_API_KEY
-			}
-		});
-
-		const data = _.get(response, 'data');
-
-		return data;
-	} catch (error) {
-		if (error.response) {
-			console.error(error.response.data);
-			console.error(error.response.status);
-		} else {
-			console.error(error.message);
-		}
-
-		return null;
+	if (percentage < 0.1) {
+		result = 'Top 0.1% • ';
+	} else if (percentage < 1) {
+		result = 'Top 1% • ';
+	} else if (percentage < 5) {
+		result = 'Top 5% • ';
+	} else if (percentage < 10) {
+		result = 'Top 10% • ';
+	} else if (percentage < 20) {
+		result = 'Top 20% • ';
+	} else if (percentage < 30) {
+		result = 'Top 30% • ';
+	} else if (percentage < 40) {
+		result = 'Top 40% • ';
+	} else if (percentage < 50) {
+		result = 'Top 50% • ';
 	}
+
+	return result;
 };
 
-const getNftLastPrice = async (contractAddress, tokenId) => {
-	const url = `https://api.nftgo.dev/eth/v1/nft/${contractAddress}/${tokenId}/metrics`;
+const getOpenRarity = async (contractAddress, tokenId) => {
+	const url = `https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}`;
 
 	try {
 		const response = await axios.get(url, {
 			headers: {
-				'X-API-KEY': NFTGO_API_KEY
+				'X-API-KEY': OPENSEA_API_KEY
 			}
 		});
+		const data = _.get(response, 'data');
+		const rank = _.get(data, 'rarity_data.rank');
+		const maxRank = _.get(data, 'rarity_data.max_rank');
+		const percentage = (parseInt(rank) / parseInt(maxRank)) * 100;
 
-		const lastPrice = _.get(response, ['data', 'last_price']);
-
-		return lastPrice;
+		return `${openRarityHelper(percentage)}${parseInt(rank).toLocaleString(
+			'en-US'
+		)} / ${parseInt(maxRank).toLocaleString('en-US')}`;
 	} catch (error) {
 		if (error.response) {
 			console.error(error.response.data);
@@ -195,33 +196,6 @@ const getNftLastPrice = async (contractAddress, tokenId) => {
 
 		return null;
 	}
-};
-
-const getRankAndLastSale = async (contractAddress, tokenId) => {
-	if (!NFTGO_ENABLED) {
-		return {
-			rank: null,
-			lastSale: null
-		};
-	}
-	const rarity = await getNFTGORarity(contractAddress, tokenId);
-	const lastPrice = await getNftLastPrice(contractAddress, tokenId);
-	const price_usd = lastPrice
-		? parseFloat(_.get(lastPrice, 'price_usd')).toLocaleString('en-US', {
-				minimumFractionDigits: 2,
-				maximumFractionDigits: 2
-		  })
-		: null;
-	const lastSale = lastPrice
-		? `\`${lastPrice.price_token} ${lastPrice.token_symbol} ($ ${price_usd})\` <t:${lastPrice.time}:R>`
-		: 'N/A';
-	const rank = _.get(rarity, 'rank');
-	console.log(`NFTGO Rarity Rank: #${rank}`);
-
-	return {
-		rank: rank,
-		lastSale: lastSale
-	};
 };
 
 export {
@@ -229,8 +203,8 @@ export {
 	shortenAddress,
 	getEpochTimestamp,
 	getX2Y2FloorPrice,
-	getRankAndLastSale,
 	getOpenseaFloorPrice,
 	getX2Y2CollectionName,
-	getLooksRareFloorPrice
+	getLooksRareFloorPrice,
+	getOpenRarity
 };

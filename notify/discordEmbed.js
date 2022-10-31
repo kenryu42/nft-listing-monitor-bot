@@ -1,4 +1,3 @@
-import { CONTRACT_ADDRESS, NFTGO_ENABLED } from '../config/setup.js';
 import { markets } from '../config/markets.js';
 import { MessageEmbed, WebhookClient } from 'discord.js';
 
@@ -20,17 +19,16 @@ const createEmbed = (event, market) => {
 			text: markets[market].name,
 			iconURL: markets[market].iconURL
 		});
-	if (NFTGO_ENABLED && !event.is_bundle) {
-		embed.addField('Last Sale', event.lastSale, false);
-		embed.setAuthor({
-			name: `NFTGO Rarity Rank: #${event.rank || 'N/A'}`,
-			iconURL:
-				'https://pbs.twimg.com/profile_images/1475300585196777472/GYA3Y-EC_400x400.jpg',
-			url: `https://nftgo.io/asset/ETH/${CONTRACT_ADDRESS}/${event.tokenId}`
-		});
-	}
+
 	if (event.quantity > 1) {
 		embed.addField('Quantity', `\`${event.quantity}\``, false);
+	}
+	if (event.openRarity) {
+		embed.setAuthor({
+			name: `Rarity Rank: ${event.openRarity}`,
+			iconURL:
+				'https://pbs.twimg.com/profile_images/1565548199221362694/_sX_URXO_400x400.jpg'
+		});
 	}
 	embed.addField(
 		'Seller',

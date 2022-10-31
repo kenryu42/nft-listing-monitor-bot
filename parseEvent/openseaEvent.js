@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, BLACK_LIST } from '../config/setup.js';
-import { shortenAddress, getRankAndLastSale } from '../utils/api.js';
+import { shortenAddress, getOpenRarity } from '../utils/api.js';
 
 const openseaEvent = async (event, floorPrice, ethUsd) => {
 	let url;
@@ -17,6 +17,15 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 		maximumFractionDigits: 2
 	});
 	const sellerAddr = _.get(event, ['seller', 'address']);
+	const isRarityEnabled = _.get(event, [
+		'asset',
+		'collection',
+		'is_rarity_enabled'
+	]);
+	const openRarity = isRarityEnabled
+		? await getOpenRarity(CONTRACT_ADDRESS, tokenId)
+		: null;
+
 	if (BLACK_LIST.includes(sellerAddr.toLowerCase())) {
 		console.log(`Seller ${sellerAddr} is blacklisted, skipping...`);
 		return null;
@@ -45,17 +54,13 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 	}
 
 	const title = `${tokenName} listed for ${ethPrice} ETH ($${usdPrice})${underFloor}`;
-	const { rank, lastSale } = await getRankAndLastSale(
-		CONTRACT_ADDRESS,
-		tokenId
-	);
 
 	console.log(
 		`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on opensea\n`
 	);
 
 	return {
-		rank: rank,
+		openRarity: openRarity,
 		tokenId: tokenId,
 		quantity: quantity,
 		is_bundle: is_bundle,
@@ -63,7 +68,6 @@ const openseaEvent = async (event, floorPrice, ethUsd) => {
 		image: image,
 		url: url,
 		price: ethPrice,
-		lastSale: lastSale,
 		usdPrice: usdPrice,
 		floorPrice: floorPrice,
 		seller: seller,
