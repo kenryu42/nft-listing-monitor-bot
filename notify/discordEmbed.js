@@ -25,7 +25,7 @@ const createEmbed = (event, market) => {
 	}
 	if (event.openRarity) {
 		embed.setAuthor({
-			name: `Rarity Rank: ${event.openRarity}`,
+			name: `Open Rarity: ${event.openRarity}`,
 			iconURL:
 				'https://pbs.twimg.com/profile_images/1565548199221362694/_sX_URXO_400x400.jpg'
 		});
