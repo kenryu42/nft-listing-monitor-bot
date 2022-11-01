@@ -1,5 +1,6 @@
 import { markets } from '../config/markets.js';
 import { MessageEmbed, WebhookClient } from 'discord.js';
+import { CONTRACT_ADDRESS } from '../config/setup.js';
 
 const createEmbed = (event, market) => {
 	const isX2Y2 = market === 'x2y2' ? '/items' : '';
@@ -25,9 +26,10 @@ const createEmbed = (event, market) => {
 	}
 	if (event.openRarity) {
 		embed.setAuthor({
-			name: `Open Rarity: ${event.openRarity}`,
+			name: `OpenRarity: ${event.openRarity}`,
 			iconURL:
-				'https://pbs.twimg.com/profile_images/1565548199221362694/_sX_URXO_400x400.jpg'
+				'https://pbs.twimg.com/profile_images/1565548199221362694/_sX_URXO_400x400.jpg',
+			url: `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS}/${event.tokenId}`
 		});
 	}
 	embed.addField(

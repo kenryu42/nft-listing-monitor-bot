@@ -178,9 +178,12 @@ const getOpenRarity = async (contractAddress, tokenId) => {
 				'X-API-KEY': OPENSEA_API_KEY
 			}
 		});
-		const data = _.get(response, 'data');
-		const rank = _.get(data, 'rarity_data.rank');
-		const maxRank = _.get(data, 'rarity_data.max_rank');
+		const rarityData = _.get(response, 'data.rarity_data');
+
+		if (!rarityData) return null;
+
+		const rank = _.get(rarityData, 'rank');
+		const maxRank = _.get(rarityData, 'max_rank');
 		const percentage = (parseInt(rank) / parseInt(maxRank)) * 100;
 
 		return `${openRarityHelper(percentage)}${parseInt(rank).toLocaleString(

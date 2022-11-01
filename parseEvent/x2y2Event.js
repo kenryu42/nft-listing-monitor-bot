@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, BLACK_LIST } from '../config/setup.js';
-import { shortenAddress } from '../utils/api.js';
+import { shortenAddress, getOpenRarity } from '../utils/api.js';
 
 const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 	const tokenId = _.get(event, ['token', 'token_id']);
@@ -24,10 +24,12 @@ const x2y2Event = async (event, floorPrice, collectionName, ethUsd) => {
 			? ' LOWER THAN FLOOR 🔥🔥🔥'
 			: '';
 	const title = `${tokenName} listed for ${ethPrice} ETH ($${usdPrice})${underFloor}`;
+	const openRarity = await getOpenRarity(CONTRACT_ADDRESS, tokenId);
 
 	console.log(`${tokenName} listed for ${ethPrice} Ξ ($${usdPrice}) on x2y2\n`);
 
 	return {
+		openRarity: openRarity,
 		tokenId: tokenId,
 		quantity: 1,
 		title: title,
